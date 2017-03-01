@@ -50,6 +50,6 @@ val testFromPaper4 =
 val testFromPaper5 =
     getType (Lambda ("m", Let ("y", Ident "m",
                                Let ("x", Apply (Ident "y", Bool true),
-                                    Ident "x"))))
+                                    Ident "x"))));
 
 end
