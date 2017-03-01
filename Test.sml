@@ -52,4 +52,13 @@ val testFromPaper5 =
                                Let ("x", Apply (Ident "y", Bool true),
                                     Ident "x"))));
 
+(* From https://en.wikipedia.org/wiki/Hindley%E2%80%93Milner_type_system#Free_type_variables *)
+val testFromWikipedia =
+    getType (Let ("bar",
+                  Lambda ("x",
+                          Let ("foo",
+                               Lambda ("y", Ident "x"),
+                               Ident "foo")),
+                  Ident "bar"));
+
 end
