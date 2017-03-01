@@ -155,4 +155,11 @@ fun getType e =
   let val (s, t) = infer [] e
   in apply s t end
 
+(* toString : ty -> string
+ * Returns a string representation of the given type. *)
+fun toString (Var id) = "'" ^ id
+  | toString Bool = "bool"
+  | toString Int = "int"
+  | toString (Fun (t1, t2)) = toString t1 ^ " -> " ^ toString t2
+
 end

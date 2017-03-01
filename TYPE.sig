@@ -8,4 +8,6 @@ sig
     val Fun : ty * ty -> ty
 
     val getType : Expr.expr -> ty
+
+    val toString : ty -> string
 end
