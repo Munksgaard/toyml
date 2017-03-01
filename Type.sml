@@ -39,35 +39,32 @@ fun apply _ Int = Int
 fun compose s1 s2 =
   s1 @ (map (fn (s, v) => (s, apply s1 v)) s2)
 
-(* varBind : ident -> ty -> substitution list option
+(* varBind : ident -> ty -> substitution list
  * Tries to bind ty to the type variable given by id.
  * If ty is a type variable, simply perform the binding, otherwise perform
  * the occurs check: If id is a free variable in ty, then we'll get a
  * recursive substitution, which we consider an error. *)
 fun varBind id ty =
   case ty of
-      Var id' => if id = id' then SOME []
-                else SOME [(id, ty)]
+      Var id' => if id = id' then []
+                else [(id, ty)]
     | _ => if (freevars ty) contains id then
-             NONE
+             raise Fail "occurs check"
            else
-             SOME [(id, ty)]
+             [(id, ty)]
 
-(* mgu : ty -> ty -> substitution list option
+(* mgu : ty -> ty -> substitution list
  * Find the most general substitution that unifies t1 and t2. *)
 fun mgu (Fun (l, r)) (Fun (l', r')) =
   let val s1 = mgu l l'
-      val s2 = Option.map (fn s => mgu (apply s r) (apply s r')) s1
-  in case (s1, Option.join s2) of
-         (SOME s1', SOME s2') => SOME (compose s1' s2')
-       | _ => NONE
+      val s2 = mgu (apply s1 r) (apply s1 r')
+  in compose s1 s2
   end
   | mgu (Var u) t = varBind u t
   | mgu t (Var u) = varBind u t
-  | mgu Int Int = SOME []
-  | mgu Bool Bool = SOME []
-  | mgu _ _ = NONE
-
+  | mgu Int Int = []
+  | mgu Bool Bool = []
+  | mgu _ _ = raise Fail "no unification found"
 
 (* freevarsScheme : tyScheme -> ident list
  * Find the free variables in the given type scheme. *)
@@ -129,9 +126,7 @@ fun infer env (Expr.Lambda (x, e)) : (substitution list * ty) =
     let val (s1, t1) = infer env e1
         val (s2, t2) = infer (applyEnv s1 env) e2
         val fresh = getFresh ()
-        val s3 = case mgu (apply s2 t1) (Fun (t2, fresh)) of
-                     SOME s => s
-                   | NONE => raise Fail "No unifier found"
+        val s3 = mgu (apply s2 t1) (Fun (t2, fresh))
     in (compose s3 (compose s2 s1), apply s3 fresh)
     end
   | infer env (Expr.Let (x, e1, e2)) =
