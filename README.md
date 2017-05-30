@@ -1,6 +1,6 @@
 # toyml
 
-This is a small toy implementation of a simple functional programming language
+toyml is an implementation of a simple functional programming language
 written in Standard ML (tested on Moscow ML).
 
 So far, it only contains the type checker, which is heavily based on [Martin
