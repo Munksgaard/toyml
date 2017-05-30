@@ -3,6 +3,8 @@ struct
 
 open Misc
 
+type ident = string
+
 datatype expr = Int of int
               | Bool of bool
               | Ident of ident

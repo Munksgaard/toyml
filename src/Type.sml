@@ -5,6 +5,8 @@ open Misc
 infix contains
 infix withoutAll
 
+type ident = Expr.ident
+
 datatype ty = Int
             | Bool
             | Var of ident

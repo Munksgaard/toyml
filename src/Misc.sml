@@ -13,6 +13,4 @@ fun lookup [] _ = NONE
   | lookup ((key, value) :: xs) x =
     if key = x then SOME value else lookup xs x
 
-type ident = string
-
 end
