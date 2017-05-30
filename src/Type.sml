@@ -10,10 +10,13 @@ datatype ty = Int
             | Var of ident
             | Fun of ty * ty
 
+(* A substitution maps a type variable to a type  *)
 type substitution = (ident * ty)
 
+(* A type scheme is a type and a list of bound variables *)
 type tyScheme = ident list * ty
 
+(* A type environment maps variables to type schemes *)
 type tyEnv = (ident * tyScheme) list
 
 (* freevars : ty -> ident list
