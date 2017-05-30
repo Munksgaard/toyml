@@ -5,8 +5,8 @@ infix contains
 fun [] contains  _ = false
   | (x :: xs) contains y = if x = y then true else xs contains y
 
-infix withoutAll
-fun xs withoutAll ys =
+infix except
+fun xs except ys =
   List.filter (fn x => not (List.exists (fn y => x = y) ys))  xs
 
 fun lookup [] _ = NONE

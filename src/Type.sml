@@ -3,7 +3,7 @@ struct
 
 open Misc
 infix contains
-infix withoutAll
+infix except
 
 type ident = Expr.ident
 
@@ -74,7 +74,7 @@ fun mgu (Fun (l, r)) (Fun (l', r')) =
 (* freevarsScheme : tyScheme -> ident list
  * Find the free variables in the given type scheme. *)
 fun freevarsScheme (ids, t) =
-  freevars t withoutAll ids
+  freevars t except ids
 
 local
   val counter = ref 0
@@ -112,7 +112,7 @@ fun freevarsEnv env =
    also free in the type environment.
    Generalizing is the opposite of instantiating. *)
 fun generalize env ty =
-  (freevars ty withoutAll freevarsEnv env, ty)
+  (freevars ty except freevarsEnv env, ty)
 
 (* applyEnv : substitution list -> tyEnv -> tyEnv
  * Apply the given substitutions to a type environment. *)
